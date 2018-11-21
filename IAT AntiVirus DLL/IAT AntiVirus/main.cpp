@@ -17,7 +17,7 @@
 #include <Psapi.h>
 #include <TlHelp32.h>
 
-typedef int(*fpMessageBoxA)(
+typedef int(WINAPI *fpMessageBoxA)(
 	HWND    hWnd,
 	LPCSTR lpText,
 	LPCSTR lpCaption,
@@ -100,10 +100,9 @@ DWORD StartProcess() {
 		}
 
 		//
-		// Exit if check sums dont exit
+		// Exit if check sums dont match
 		if (dwTarget != dwCount) {
-			MessageBoxA(NULL, "VIRUS FOUND", "ATTENTION", MB_ICONERROR);
-			ExitProcess(EXIT_FAILURE);
+			OriginalMessageBoxA(NULL, "VIRUS FOUND", "ATTENTION", MB_ICONERROR);
 			return EXIT_FAILURE;
 		}
 	}

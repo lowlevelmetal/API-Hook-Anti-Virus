@@ -87,7 +87,7 @@ DWORD AntiVirus() {
 		}
 
 		//
-		// Exit if check sums dont exit
+		// Exit if check sums dont match
 		if (dwTarget != dwCount) {
 			OriginalMessageBoxA(NULL, "VIRUS FOUND", "ATTENTION", MB_ICONERROR);
 			return EXIT_FAILURE;
