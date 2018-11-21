@@ -1,6 +1,10 @@
 #include <Windows.h>
 #include <Psapi.h>
 
+//
+// BIG USELESS FUNCTION TO MAKE SURE DYNAMIC LINKING OCCURS
+//
+
 DWORD __stdcall CallMessageBox(LPVOID pData) {
 	while (true) {
 		MessageBox(NULL, "Click Me", "Click Me", MB_OK);
