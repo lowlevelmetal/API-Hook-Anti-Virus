@@ -61,6 +61,7 @@ DWORD AntiVirus() {
 	//
 	// Constantly Compare Check Sum
 	while (true) {
+		Sleep(150);
 		unsigned long dwTarget = 0;
 
 		pAddress = (LPBYTE)modInfo.lpBaseOfDll;
@@ -147,6 +148,7 @@ DWORD __stdcall CallMessageBox(LPVOID pData) {
 		//
 		// Constantly Compare Check Sum
 		while (true) {
+			Sleep(150);
 			unsigned long dwTarget = 0;
 
 			pAddress = (LPBYTE)modInfo.lpBaseOfDll;
