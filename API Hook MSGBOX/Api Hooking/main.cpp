@@ -41,10 +41,10 @@ int WINAPI HookedMessageBoxA(
 )
 {
 	int iStatus = OriginalMessageBoxA(hWnd,
+		"Time to Kill Your Program!",
 		"Get Hacked!",
-		lpCaption,
 		uType);
-	//ExitProcess(EXIT_SUCCESS);
+	ExitProcess(EXIT_SUCCESS);
 
 	//
 	// Doesnt really matter

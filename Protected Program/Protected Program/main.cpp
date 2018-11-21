@@ -4,7 +4,7 @@
 #include <TlHelp32.h>
 #include <Psapi.h>
 
-typedef int(*fpMessageBoxA)(
+typedef int(WINAPI *fpMessageBoxA)(
 	HWND    hWnd,
 	LPCSTR lpText,
 	LPCSTR lpCaption,
@@ -16,7 +16,7 @@ fpMessageBoxA OriginalMessageBoxA =
 (fpMessageBoxA)GetProcAddress(GetModuleHandle("user32.dll"),
 	"MessageBoxA");
 
-DWORD __stdcall AntiVirus(LPVOID pData) {
+DWORD AntiVirus() {
 	MessageBox(NULL, "Anti Virus Loaded", "TEST", MB_OK);
 
 	//
@@ -90,7 +90,7 @@ DWORD __stdcall AntiVirus(LPVOID pData) {
 		// Exit if check sums dont exit
 		if (dwTarget != dwCount) {
 			OriginalMessageBoxA(NULL, "VIRUS FOUND", "ATTENTION", MB_ICONERROR);
-			ExitProcess(EXIT_FAILURE);
+			return EXIT_FAILURE;
 		}
 	}
 
@@ -180,11 +180,28 @@ DWORD __stdcall CallMessageBox(LPVOID pData) {
 	return EXIT_SUCCESS;
 }
 
-int main(int argc, char *argv[]) {
-	CreateThread(0, 0, AntiVirus, 0, 0, 0);
-	HANDLE hThread = CreateThread(0, 0, CallMessageBox, 0, 0, 0);
+HANDLE hThreads[2];
 
-	WaitForSingleObject(hThread, INFINITE);
+DWORD __stdcall RunAntiVirus(LPVOID pData) {
+	DWORD dwStatus = AntiVirus();
+
+	if (dwStatus == EXIT_FAILURE || dwStatus == 1337) {
+		TerminateThread(hThreads[1], EXIT_FAILURE);
+		TerminateThread(hThreads[0], EXIT_FAILURE);
+	}
+
+	return EXIT_SUCCESS;
+}
+
+int main(int argc, char *argv[]) {
+
+	hThreads[0] = CreateThread(0, 0, RunAntiVirus, 0, 0, 0);
+	hThreads[1] = CreateThread(0, 0, CallMessageBox, 0, 0, 0);
+
+	WaitForMultipleObjects(2, hThreads, TRUE, INFINITE);
+
+	CloseHandle(hThreads[0]);
+	CloseHandle(hThreads[1]);
 
 	return EXIT_SUCCESS;
 }
