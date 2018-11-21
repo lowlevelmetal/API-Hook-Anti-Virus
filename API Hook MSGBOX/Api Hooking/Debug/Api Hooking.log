@@ -1,0 +1,3 @@
+﻿  main.cpp
+c:\users\matth\source\repos\api hooking\api hooking\main.cpp(95): warning C4477: 'sprintf' : format string '%X' requires an argument of type 'unsigned int', but variadic argument 2 has type 'LPBYTE'
+  Api Hooking.vcxproj -> C:/HACKS/hook2.dll
